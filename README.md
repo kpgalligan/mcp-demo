@@ -72,4 +72,15 @@ Save (if needed?). Then go back to the Cursor Settings/MCP tab. You should see `
 
 If you do not see a green indicator to the left of `github`, you will need some help.
 
-Back to the workshop...
+## Creating an issue
+
+Find the url for the repo you created. It should be `[your account]/mcp-demo`. You'll need that.
+
+Prompt the following to your agent:
+
+```
+Read the file package.json. Create a new GitHub issue in '[your account]/mcp-demo' to review the versions of the dependencies to make sure they are the latest stable and have no serious warnings. Include a checklist of current dependencies with their currently listed versions. Print a link to the new issue.
+```
+
+That should churn for a bit. Hopefully it was successful :)
+
