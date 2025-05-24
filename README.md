@@ -139,7 +139,7 @@ We're going to add another tool. It will open a file. The tool should be called 
 
 Read the MCP sdk docs at https://github.com/modelcontextprotocol/typescript-sdk
 
-The tool should take one parameter 'file_path'. That is the absolute path to the file we want to open.
+The tool should take one parameter 'file_path'. That is the absolute path to the file we want to open. Make sure to add a description for the parameter specifying that the path needs to be the absolute path.
 
 When called, the tool should execute 'open [file_path]' on the terminal.
 ```
