@@ -84,3 +84,58 @@ Read the file package.json. Create a new GitHub issue in '[your account]/mcp-dem
 
 That should churn for a bit. Hopefully it was successful :)
 
+## MCP Time
+
+This project is itself an MCP Server. There is one tool in it. 'time_now'.
+
+Run the node build:
+
+```shell
+npm run build
+```
+
+That should complete fine. If not, ask for help.
+
+Go back to your MCP config json and add the following:
+
+```json
+"my-mcp": {
+  "command": "node",
+  "args": ["/Users/[you]/[repo path]/dist/index.js"]
+}
+```
+
+Replace "you" and "repo path" with your user and the path to where you cloned the repo.
+
+You should see 'my-mcp' in the list of MCP servers. Click "refresh" again.
+
+Now, prompt your model with:
+
+```
+Call my-mcp to get the current time
+```
+
+It will churn for a bit, then should print the current date/time.
+
+If you look at `index.ts`, here's what's happening.
+
+1. We create an instance of McpServer
+2. We add a tool 'time_now'
+3. When that tool is called, it runs `date` on the terminal
+4. It returns the result
+
+That's it. Is it a basic MCP tool? About as basic as it can get. But, these are basic things. MCP is so popular in part because it is so simple (for simple things).
+
+### Add a new tool
+
+We're going to add a new tool. We're vibe-coding. I added a terminal command tool because coding agents work *much* better if they have something functional to look at.
+
+In your agent, add 'LLM-Context.md' to your agent's context. In Cursor, and most VSCode-based agents, that means dragging it into the agent window. Or, just prompt "Load LLM-Context.md". That should work pretty much anywhere.
+
+Then prompt with:
+
+```
+We're going to add another tool. It will open a file. The tool should be called 'open_file'. It should take one parameter 'file_path', which is the absolute path to the file we want to open. When called, the tool should execute 'open [file_path]' on the terminal.
+```
+
+Cross your fingers...
