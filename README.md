@@ -135,7 +135,21 @@ In your agent, add 'LLM-Context.md' to your agent's context. In Cursor, and most
 Then prompt with:
 
 ```
-We're going to add another tool. It will open a file. The tool should be called 'open_file'. It should take one parameter 'file_path', which is the absolute path to the file we want to open. When called, the tool should execute 'open [file_path]' on the terminal.
+We're going to add another tool. It will open a file. The tool should be called 'open_file'.
+
+Read the MCP sdk docs at https://github.com/modelcontextprotocol/typescript-sdk
+
+The tool should take one parameter 'file_path'. That is the absolute path to the file we want to open.
+
+When called, the tool should execute 'open [file_path]' on the terminal.
 ```
 
 Cross your fingers...
+
+If that worked, you guessed it. Go back to the MCP settings, refresh.
+
+Now prompt:
+
+```
+I've made a huge mistake. Open 'config/uh_oh.mp4'.
+```

@@ -4,6 +4,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { promisify } from 'util';
 import { execFile } from 'child_process';
+import { z } from 'zod';
 
 const execFileAsync = promisify(execFile);
 
@@ -23,6 +24,23 @@ server.tool('time_now', 'Get the current time', {}, async () => {
       {
         type: 'text',
         text: stdout,
+      },
+    ],
+  };
+});
+
+server.tool('open_file', 'Open a file using the system default application', {
+  file_path: z.string().describe('Absolute path to the file to open'),
+}, async ({ file_path }) => {
+  const { stdout, stderr } = await execFileAsync('open', [file_path], {
+    encoding: 'utf8',
+  });
+
+  return {
+    content: [
+      {
+        type: 'text',
+        text: `File opened: ${file_path}`,
       },
     ],
   };
