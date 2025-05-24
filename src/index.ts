@@ -1,66 +1,36 @@
 #!/usr/bin/env node
 
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import {
-  CallToolRequestSchema,
-  ListToolsRequestSchema,
-} from '@modelcontextprotocol/sdk/types.js';
+import { promisify } from 'util';
+import { execFile } from 'child_process';
 
-const server = new Server(
-  {
-    name: 'mcp-demo-server',
-    version: '1.0.0',
-  },
-  {
-    capabilities: {
-      tools: {},
-    },
-  }
-);
+const execFileAsync = promisify(execFile);
 
-server.setRequestHandler(ListToolsRequestSchema, async () => {
+const server = new McpServer({
+  name: 'mcp-demo-server',
+  version: '1.0.0',
+  description: 'Our very own MCP Server',
+});
+
+server.tool('time_now', 'Get the current time', {}, async () => {
+  const { stdout, stderr } = await execFileAsync('date', [], {
+    encoding: 'utf8',
+  });
+
   return {
-    tools: [
+    content: [
       {
-        name: 'hello',
-        description: 'Say hello to someone',
-        inputSchema: {
-          type: 'object',
-          properties: {
-            name: {
-              type: 'string',
-              description: 'Name of the person to greet',
-            },
-          },
-          required: ['name'],
-        },
+        type: 'text',
+        text: stdout,
       },
     ],
   };
 });
 
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  switch (request.params.name) {
-    case 'hello':
-      const name = request.params.arguments?.name as string;
-      return {
-        content: [
-          {
-            type: 'text',
-            text: `Hello, ${name}!`,
-          },
-        ],
-      };
-    default:
-      throw new Error(`Unknown tool: ${request.params.name}`);
-  }
-});
-
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error('MCP Demo Server running on stdio');
 }
 
 if (require.main === module) {
